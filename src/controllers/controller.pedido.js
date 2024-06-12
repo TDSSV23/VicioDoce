@@ -34,7 +34,7 @@ class PedidoController {
                 }
 
                 return res.status(201).json( { message: "Pedido cadastrado com sucesso.", data: {
-                    id: result.insertID
+                    id: result.insertId
                 }
             } );
             });

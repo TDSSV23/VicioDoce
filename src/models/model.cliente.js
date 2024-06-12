@@ -1,11 +1,11 @@
 import bcrypt from "bcrypt";
 import { con } from "../config/database.js";
 
-class UsuarioModel {
+class ClienteModel {
 
-    // Método para obter todos os usuários
-    static getAllUsuarios(callback) {
-        let sql = `select * from usuario`;
+    // Método para obter todos os cliente
+    static getAllClientes(callback) {
+        let sql = `select * from cliente`;
 
         con.query(sql, function(err, result){
             if (err)
@@ -15,9 +15,9 @@ class UsuarioModel {
         });
     }
 
-    // Método para criar um novo usuário
-    static createUsuario(nome, email, senha, callback) {
-        let sql = `insert into usuario(nome, email, senha) values (?,?,?)`;
+    // Método para criar um novo cliente
+    static createCliente(nome, email, senha, callback) {
+        let sql = `insert into cliente(nome, email, senha) values (?,?,?)`;
 
         // Criptografar senha
         const hash = bcrypt.hashSync(senha, 10);
@@ -30,9 +30,9 @@ class UsuarioModel {
         });
     }
 
-    // Método para editar um usuário existente
-    static editUsuario(id, nome, email, callback) {
-        let sql =`update usuario set nome=?, email=? where id_usuario=?`;
+    // Método para editar um cliente existente
+    static editCliete(id, nome, email, callback) {
+        let sql =`update cliente set nome=?, email=? where id_cliente=?`;
 
         con.query(sql, [nome, email, id], function(err, result) {
             if (err)
@@ -42,9 +42,9 @@ class UsuarioModel {
         })
     }
 
-    // Método para remover um usuário
-    static removeUsuario(id, callback) {
-        let sql = `delete from usuario where id_usuario=?`;
+    // Método para remover um cliente
+    static removeCliente(id, callback) {
+        let sql = `delete from cliente where id_cliente=?`;
 
         con.query(sql, [id], function(err, result){
             if (err)
@@ -56,4 +56,4 @@ class UsuarioModel {
    
 }
 
-export default UsuarioModel;
+export default ClienteModel;

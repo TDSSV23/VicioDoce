@@ -1,17 +1,17 @@
-import UsuarioModel from "../models/model.usuario.js";
+import ClienteModel from "../models/model.cliente.js";
 
-class UsuarioController {
+class ClienteController {
 
-    static getAllUsuarios(req, res){
+    static getAllClientes(req, res){
         try {
-            UsuarioModel.getAllUsuarios(function(err, result){
+            ClienteModel.getAllClientes(function(err, result){
                 if (err) {
                     console.error(err);
-                    return res.status(500).json( { error: "Ocorreu um erro ao buscar os usuários."} );
+                    return res.status(500).json( { error: "Ocorreu um erro ao buscar os clientes."} );
                 }
 
                 if (!result[0]) {
-                    return res.status(404).json( { message: "Não foram encontrados usuários."} );
+                    return res.status(404).json( { message: "Não foram encontrados clientes."} );
                 }
 
                 return res.status(200).json(result);
@@ -22,21 +22,21 @@ class UsuarioController {
         }
     }
 
-    static createUsuario(req, res) {
+    static createCliente(req, res) {
         const p = req.body;
         const nome = p.nome;
         const email = p.email;
         const senha = p.senha;
 
         try {
-            UsuarioModel.createUsuario(nome, email, senha, function(err, result){
+            ClienteModel.createCliente(nome, email, senha, function(err, result){
                 if (err) {
-                    console.error('Erro ao cadastrar usuario: ', err);
-                    return res.status(500).json( { error: "Ocorreu um erro ao cadastrar o usuário." } );
+                    console.error('Erro ao cadastrar cliente: ', err);
+                    return res.status(500).json( { error: "Ocorreu um erro ao cadastrar o cliente." } );
                 }
 
                 return res.status(201).json( { 
-                    message: "Usuário inserido com sucesso.",
+                    message: "Cliente inserido com sucesso.",
                     data: {
                         id: result.insertId,
                         nome, 
@@ -50,26 +50,26 @@ class UsuarioController {
             res.status(500).json( { error: "Erro interno do servidor." } );
         }
     }
-    static editUsuario(req, res){
+    static editCliente(req, res){
         const id = req.params.id;
         const p = req.body;
         const nome = p.nome;
         const email = p.email;
         
         try {
-            UsuarioModel.editUsuario(id, nome, email, function(err, result){
+            ClienteModel.editCliente(id, nome, email, function(err, result){
                 if (err) {
-                    console.error("Erro ao editar o usuário: ", err);
-                    return res.status(500).json( { error: "Ocorreu um erro ao editar o usuário." } );
+                    console.error("Erro ao editar o cliente: ", err);
+                    return res.status(500).json( { error: "Ocorreu um erro ao editar o cliente." } );
                 }
 
                 if (result.affectedRows === 0) {
-                    return res.status(404).json( { message: "Usuário não encontrado." } );
+                    return res.status(404).json( { message: "Cliente não encontrado." } );
                 }
 
                 return res.status(200).json(
                     {
-                        message: "Usuário editado com sucesso.",
+                        message: "Cliente editado com sucesso.",
                         data: {
                             id, nome, email
                         }
@@ -82,21 +82,21 @@ class UsuarioController {
         }
     }
 
-    static removeUsuario(req, res) {
+    static removeCliente(req, res) {
         let id = req.params.id;
 
         try {
-            UsuarioModel.removeUsuario(id, function(err, result){
+            ClienteModel.removeCliente(id, function(err, result){
                 if (err) {
-                    console.error("Erro ao deletar usuário: ", err);
-                    return res.status(500).json( { error: "Ocorreu um erro ao deletar o usuário." } );
+                    console.error("Erro ao deletar cliente: ", err);
+                    return res.status(500).json( { error: "Ocorreu um erro ao deletar o cliente." } );
                 }
 
                 if (result.affectedRows === 0) {
-                    return res.status(404).json( { message: "Usuário não encontrado." } ) 
+                    return res.status(404).json( { message: "Cliente não encontrado." } ) 
                 }
                 
-                return res.status(200).json( { message: "Usuário deletado com sucesso.", data: ( id ) } );
+                return res.status(200).json( { message: "Cliente deletado com sucesso.", data: ( id ) } );
             });
             
             
@@ -107,4 +107,4 @@ class UsuarioController {
     }
 }
 
-export default UsuarioController;
+export default ClienteController;
