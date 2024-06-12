@@ -1,91 +1,59 @@
-show databases;
-
 -- Criar o banco de dados
-create database food;
-use food;
+CREATE DATABASE IF NOT EXISTS viciodoce;
+USE viciodoce;
 
--- Criar tabela: USUARIO
-create table usuario (
-	id_usuario int auto_increment,
-    nome varchar(100),
-    email varchar(100),
-    senha varchar(100),
-    adm bool not null default false,
-    primary key (id_usuario)
+-- Criar tabela: CLIENTE
+CREATE TABLE IF NOT EXISTS cliente (
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(20)
 );
-show tables;
-show columns from usuario;
+SHOW TABLES;
+SHOW COLUMNS FROM cliente;
 
--- Criar tabela: PRODUTOS
-create table produto (
-id_produto int auto_increment,
-nome varchar(100),
-descricao varchar(200),
-preco decimal(9,2),
-foto varchar(1000),
-primary key (id_produto)
- );
-show tables;
-show columns from produto;
-
--- criar tabela pedido
- create table pedido(
-  id_pedido int auto_increment,
-    id_usuario int,
-nome varchar(100),
-email varchar(100),
-fone varchar(50),
-    end_lougradouro varchar(200),
-end_numero varchar(10),
-    end_bairro varchar(100),
-    end_cidade varchar(50),
-    end_uf char(2),
-    end_cep char(8),
-    total decimal(9,2),
-primary key (id_pedido),
-    foreign key (id_usuario) references usuario (id_usuario)
-    );
-show tables;
-show columns from produto;
-
--- Criar tabela: PEDIDO_ITEM
-create table pedido_item (
-	id_item int auto_increment,
-    id_pedido int,
-    id_produto int,
-    quantidade decimal(9,2),
-    valor_unitario decimal(9,2),
-    primary key (id_item),
-    foreign key (id_pedido) references pedido (id_pedido),
-    foreign key (id_pedido) references produto (id_produto)
+-- Criar tabela: PEDIDO
+CREATE TABLE IF NOT EXISTS pedido (
+    pedido_id INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT,
+    data_pedido DATE,
+    FOREIGN KEY (cliente_id) REFERENCES cliente(id_cliente)
 );
-show tables;
-show columns from pedido_item;
+SHOW TABLES;
+SHOW COLUMNS FROM pedido;
 
-/*
-	Popular o banco...
-*/ 
+-- Criar tabela: FORNECEDOR
+CREATE TABLE IF NOT EXISTS fornecedor (
+    fornecedor_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    endereco VARCHAR(255),
+    telefone VARCHAR(20)
+);
 
-insert into usuario values (
-null, 'Administrator', 'adm@adm.com.br', 'adm', true);
+-- Criar tabela: PRODUTO
+CREATE TABLE IF NOT EXISTS produto (
+    produto_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    preco DECIMAL(10, 2),
+    fornecedor_id INT,
+    FOREIGN KEY (fornecedor_id) REFERENCES fornecedor(fornecedor_id)
+);
 
-insert into produto (nome, descricao, preco) values (
-'Burguer', 'Hamburguer de 180g, queijo, tomate, alface e cebola', 24.90);
+-- Inserir dados de exemplo (opcional)
+INSERT INTO cliente (nome, email, telefone) VALUES ('João', 'joao@email.com', '123456789');
+INSERT INTO fornecedor (nome, endereco, telefone) VALUES ('Fornecedor A', 'Rua A, 123', '987654321');
+INSERT INTO produto (nome, preco, fornecedor_id) VALUES ('Produto X', 10.50, 1);
 
-insert into produto (nome, descricao, preco) values (
-'Batata Frita', 'Batatas fritas crocantes e douradas', 12.00);
+-- Criar tabela: ITEM_PEDIDO
+CREATE TABLE IF NOT EXISTS item_pedido (
+    item_id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT,
+    produto_id INT,
+    quantidade INT,
+    preco_unitario DECIMAL(10, 2),
+    FOREIGN KEY (pedido_id) REFERENCES pedido(pedido_id),
+    FOREIGN KEY (produto_id) REFERENCES produto(produto_id)
+);
 
-insert into produto (nome, descricao, preco) values (
-'Milkshake', 'Um milkshake cremoso feito com sorvete de chocolate', 14.90);
-
-
-
-select * from usuario;
-select * from produto;
-select * from pedido;
-select * from pedido_item;
-
-drop table pedido_item;
-drop table pedido;
-
-
+-- Exemplo de inserção de dados na tabela ITEM_PEDIDO (opcional)
+INSERT INTO item_pedido (pedido_id, produto_id, quantidade, preco_unitario) VALUES (1, 1, 2, 10.50);
