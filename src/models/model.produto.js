@@ -14,6 +14,19 @@ class ProdutoModel {
         })
     }
 
+    // Método para criar um novo produto
+    static createProduto(nome, descricao, preco, foto) {
+        let sql = `insert into produto(nome, descricao, preco, foto) values (?,?,?,?)`;
+
+        
+        con.query(sql, [nome, descricao, preco, foto], function(err, result){
+            if (err)
+                callback(err, null);
+            else
+                callback(null, result);
+        });
+    }
+
 
 }
 
